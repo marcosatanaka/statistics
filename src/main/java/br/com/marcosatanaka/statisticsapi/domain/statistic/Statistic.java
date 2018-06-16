@@ -1,4 +1,4 @@
-package br.com.marcosatanaka.statisticsapi.domain;
+package br.com.marcosatanaka.statisticsapi.domain.statistic;
 
 import java.math.BigDecimal;
 
