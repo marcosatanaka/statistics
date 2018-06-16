@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>statistics-api</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Restful API for statistics</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
