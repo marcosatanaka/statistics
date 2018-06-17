@@ -1,5 +1,7 @@
 package br.com.marcosatanaka.statisticsapi.domain.statistic;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
@@ -67,13 +69,13 @@ public class Statistic {
 		updateMinValue(newValue);
 	}
 
-	public void updateMaxValue(BigDecimal newValue) {
+	void updateMaxValue(BigDecimal newValue) {
 		if (newValue.compareTo(this.max) > 0) {
 			this.max = newValue;
 		}
 	}
 
-	public void updateMinValue(BigDecimal newValue) {
+	void updateMinValue(BigDecimal newValue) {
 		if (newValue.compareTo(this.min) < 0) {
 			this.min = newValue;
 		}
@@ -97,6 +99,7 @@ public class Statistic {
 		return this;
 	}
 
+	@JsonIgnore
 	public boolean isValid() {
 		return Duration.between(timestamp, ZonedDateTime.now()).getSeconds() <= SIXTY_SECONDS;
 	}

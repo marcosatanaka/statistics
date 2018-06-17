@@ -12,14 +12,10 @@ public class LogTransactionAction {
 
 	private static final int SIXTY_SECONDS = 60;
 
-	static final String MSG_AMOUNT_CANNOT_BE_NULL = "Amount cannot be null";
-
-	static final String MSG_TIMESTAMP_CANNOT_BE_NULL = "Timestamp cannot be null";
-
-	@NotNull(message = MSG_AMOUNT_CANNOT_BE_NULL)
+	@NotNull(message = "Amount cannot be null")
 	private BigDecimal amount;
 
-	@NotNull(message = MSG_TIMESTAMP_CANNOT_BE_NULL)
+	@NotNull(message = "Timestamp cannot be null")
 	@JsonDeserialize(using = UnixTimestampDeserializer.class)
 	private ZonedDateTime timestamp;
 

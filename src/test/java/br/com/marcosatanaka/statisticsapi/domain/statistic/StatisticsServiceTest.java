@@ -62,7 +62,7 @@ public class StatisticsServiceTest {
 	@Test
 	public void old_transactions_should_not_affect_last_minute_statistics() {
 		statisticsService.computeFor(mock(BigDecimal.valueOf(900000), now().minus(99, SECONDS)));
-		statisticsService.computeFor(mock(BigDecimal.valueOf(900000), now().minus(61, SECONDS)));
+		statisticsService.computeFor(mock(BigDecimal.valueOf(900000), now().minus(65, SECONDS)));
 		statisticsService.computeFor(mock(BigDecimal.valueOf(166.11), now().minus(24, SECONDS)));
 		statisticsService.computeFor(mock(BigDecimal.valueOf(287.88), now().minus(20, SECONDS)));
 		statisticsService.computeFor(mock(BigDecimal.valueOf(216.91), now().minus(18, SECONDS)));
