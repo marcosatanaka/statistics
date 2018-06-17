@@ -1,6 +1,7 @@
 package br.com.marcosatanaka.statisticsapi.domain.statistic;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
@@ -20,16 +21,20 @@ public class Statistic {
 
 	private ZonedDateTime timestamp;
 
-	private Statistic(BigDecimal amount) {
+	private Statistic(BigDecimal amount, Long count, ZonedDateTime timestamp) {
 		this.sum = amount;
 		this.max = amount;
 		this.min = amount;
-		this.count = 1L;
-		this.timestamp = ZonedDateTime.now();
+		this.count = count;
+		this.timestamp = timestamp;
 	}
 
-	public static Statistic buildWith(BigDecimal amount) {
-		return new Statistic(amount);
+	public static Statistic buildWith(BigDecimal amount, ZonedDateTime timestamp) {
+		return new Statistic(amount, 1L, timestamp);
+	}
+
+	public static Statistic buildEmpty() {
+		return new Statistic(BigDecimal.ZERO, 0L, ZonedDateTime.now());
 	}
 
 	public BigDecimal getSum() {
@@ -58,18 +63,42 @@ public class Statistic {
 
 	public void incrementSumWith(BigDecimal newValue) {
 		this.sum = this.sum.add(newValue);
+		updateMaxValue(newValue);
+		updateMinValue(newValue);
+	}
 
+	public void updateMaxValue(BigDecimal newValue) {
 		if (newValue.compareTo(this.max) > 0) {
 			this.max = newValue;
 		}
+	}
 
+	public void updateMinValue(BigDecimal newValue) {
 		if (newValue.compareTo(this.min) < 0) {
 			this.min = newValue;
 		}
 	}
 
-	public boolean invalid() {
-		return Duration.between(timestamp, ZonedDateTime.now()).getSeconds() > SIXTY_SECONDS;
+	public Statistic combine(Statistic anotherStatistic) {
+		this.sum = this.sum.add(anotherStatistic.sum);
+		this.count += anotherStatistic.count;
+		updateMaxValue(anotherStatistic.max);
+		updateMinValue(anotherStatistic.min);
+		return this;
+	}
+
+	public Statistic calculateAverageValueAndReturn() {
+		if (count == 0L) {
+			this.avg = BigDecimal.ZERO;
+			return this;
+		}
+
+		this.avg = sum.divide(BigDecimal.valueOf(count), RoundingMode.HALF_EVEN);
+		return this;
+	}
+
+	public boolean isValid() {
+		return Duration.between(timestamp, ZonedDateTime.now()).getSeconds() <= SIXTY_SECONDS;
 	}
 
 }

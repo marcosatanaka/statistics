@@ -36,7 +36,7 @@ public class LogTransactionAction {
 	}
 
 	public int getSecond() {
-		return timestamp.getSecond();
+		return getTimestamp().getSecond();
 	}
 
 	public boolean isOlderThanSixtySeconds() {
