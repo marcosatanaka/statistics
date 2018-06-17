@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RequestMapping("/transactions")
 public class TransactionController {
 
-	private TransactionService transactionService;
+	private final TransactionService transactionService;
 
 	@Autowired
 	public TransactionController(TransactionService transactionService) {
@@ -25,6 +25,10 @@ public class TransactionController {
 
 	@PostMapping
 	public ResponseEntity add(@Valid @RequestBody LogTransactionAction transaction) {
+		if (transaction.isOlderThanSixtySeconds()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+
 		transactionService.add(transaction);
 		return new ResponseEntity(HttpStatus.CREATED);
 	}

@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.ZonedDateTime;
 
 public class LogTransactionAction {
+
+	private static final int SIXTY_SECONDS = 60;
 
 	static final String MSG_AMOUNT_CANNOT_BE_NULL = "Amount cannot be null";
 
@@ -30,6 +33,14 @@ public class LogTransactionAction {
 
 	public ZonedDateTime getTimestamp() {
 		return timestamp;
+	}
+
+	public int getSecond() {
+		return timestamp.getSecond();
+	}
+
+	public boolean isOlderThanSixtySeconds() {
+		return Duration.between(getTimestamp(), ZonedDateTime.now()).getSeconds() > SIXTY_SECONDS;
 	}
 
 }
